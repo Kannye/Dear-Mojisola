@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+
+# ========== LETTER PAGE (with NEXT button) ==========
+letter_html = """<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>A Letter For You</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         html { scroll-behavior: smooth; }
@@ -126,20 +128,40 @@
             color: #C97B94;
             margin-top: 4px;
         }
-        .footer {
+        .next-section {
             text-align: center;
-            padding: 0 30px 45px;
+            padding: 20px 30px 50px;
             opacity: 0;
-            animation: fadeIn 0.6s ease-out 2.8s forwards;
+            animation: fadeIn 0.6s ease-out 3.0s forwards;
         }
-        .footer .heart {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-        }
-        .footer .sig {
-            color: #C97B94;
-            font-size: 0.9rem;
+        .next-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #C97B94, #E8A4B8);
+            color: #fff;
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
             letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(201, 123, 148, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Nunito', sans-serif;
+        }
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(201, 123, 148, 0.4);
+        }
+        .next-btn:active {
+            transform: translateY(0);
+        }
+        .next-hint {
+            margin-top: 12px;
+            color: #C97B94;
+            font-size: 0.85rem;
+            opacity: 0.7;
         }
         .hearts-deco {
             position: absolute;
@@ -157,16 +179,16 @@
             0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
             50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
         }
-
+        
         @media (max-width: 480px) {
             body { padding: 12px 10px; }
             .content { padding: 28px 22px 25px; }
             .header { padding: 40px 20px 25px; }
             .header h1 { font-size: 1.9rem; }
             .content p { font-size: 1rem; }
+            .next-btn { padding: 14px 40px; font-size: 1rem; }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="envelope">
@@ -174,36 +196,332 @@
         <div class="hearts-deco heart-2">💖</div>
         <div class="hearts-deco heart-3">💕</div>
         <div class="hearts-deco heart-4">💞</div>
-
+        
         <div class="header">
             <div class="from-badge">from weird boy that stares</div>
             <h1>For You</h1>
             <div class="sub">A letter I needed you to read</div>
         </div>
-
+        
         <div class="content">
             <p>I've spent the last 30 days learning about and slowly falling in love with you. I want to learn more, I want to love you more, and not just your eyes, lips and forehead 'cause they are pretty, but <span class="highlight">everything about you</span>, your stubbornness, personality, your small but very spacious heart, everything about your existence.</p>
-
+            
             <p>I know I messed up. Sorry doesn't just fix it, I get that. But what we had was real. The way we looked at each other, the laughs we shared, the late night calls, the random snaps. I miss all of it mama, cause it was real and it was ours.</p>
-
+            
             <p>I'm not letting one dumb moment erase all of that. I don't know exactly where we go from here, and I won't pretend I do.</p>
-
+            
             <p>But if you can find it in you to let it go and trust me, then I'm here for whatever you need be it time, space, proof. I just need you to stay long enough to see that I mean every word.</p>
-
+            
             <p>If there's even a little piece of you that still wants this, hold onto it. I'll do the rest.</p>
-
+            
             <p>And I promise you, I'll fight for us like nothing else matters. I'll show up consistently, communicate better, and prove with my actions not just words that you're my priority. No more dumb mistakes.</p>
-
+            
             <div class="signature">
                 <div class="title">~Supreme Leader</div>
                 <div class="subtitle">(Weird boy that stares)</div>
             </div>
         </div>
-
-        <div class="footer">
-            <div class="heart">💗🌸</div>
-            <div class="sig">Yes I've made a choice, and I choose you</div>
+        
+        <div class="next-section">
+            <a href="choice.html" class="next-btn">NEXT 💌</a>
+            <div class="next-hint">there's something else waiting for you</div>
         </div>
     </div>
 </body>
-</html>
+</html>"""
+
+with open("/mnt/agents/output/letter_page_final.html", "w", encoding="utf-8") as f:
+    f.write(letter_html)
+print("Saved: letter_page_final.html")
+
+# ========== CHOICE PAGE ==========
+choice_html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Moji...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            background: linear-gradient(135deg, #FFF0F3 0%, #FDF2F5 50%, #FCE8EE 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 16px;
+            font-family: 'Nunito', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow: hidden;
+        }
+        .container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .question {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: #8B4A5E;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            animation: slideDown 0.8s ease-out 0.3s both;
+        }
+        .question .name {
+            color: #C97B94;
+            font-style: italic;
+        }
+        .sub-question {
+            font-size: 1.3rem;
+            color: #C97B94;
+            margin-bottom: 50px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            animation: slideDown 0.8s ease-out 0.6s both;
+        }
+        .buttons {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 0.8s ease-out 0.9s both;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .btn {
+            width: 140px;
+            height: 140px;
+            border-radius: 24px;
+            border: 3px solid;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+        }
+        .btn-yes {
+            border-color: #C97B94;
+            color: #C97B94;
+            box-shadow: 0 8px 30px rgba(201, 123, 148, 0.2);
+        }
+        .btn-yes:hover {
+            background: #C97B94;
+            color: #fff;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(201, 123, 148, 0.35);
+        }
+        .btn-no {
+            border-color: #999;
+            color: #888;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        .btn-no:hover {
+            background: #f5f5f5;
+            transform: translateY(-5px) scale(1.05);
+        }
+        .btn-text {
+            transition: all 0.3s ease;
+            position: absolute;
+        }
+        .btn-emoji {
+            font-size: 4rem;
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.3);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+        }
+        .btn.clicked {
+            pointer-events: none;
+            border-color: transparent;
+            background: transparent;
+            box-shadow: none;
+        }
+        .btn.clicked .btn-text {
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        .btn.clicked .btn-emoji {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .btn-yes.clicked {
+            animation: heartPulse 1s ease-in-out infinite;
+        }
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .btn-no.clicked {
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        .result-message {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            color: #8B4A5E;
+            min-height: 30px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .result-message.show {
+            opacity: 1;
+        }
+        .hearts-bg {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .floating-heart {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            animation: floatHeart 4s ease-in-out infinite;
+        }
+        @keyframes floatHeart {
+            0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-100px) rotate(360deg); }
+        }
+        .back-link {
+            margin-top: 30px;
+            display: inline-block;
+            color: #C97B94;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 1.2s forwards;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .question { font-size: 2.2rem; }
+            .sub-question { font-size: 1.1rem; margin-bottom: 40px; }
+            .btn { width: 120px; height: 120px; font-size: 1.1rem; }
+            .btn-emoji { font-size: 3.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="heartsBg"></div>
+    
+    <div class="container">
+        <div class="question"><span class="name">Moji</span>,</div>
+        <div class="sub-question">Do you choose us?</div>
+        
+        <div class="buttons">
+            <button class="btn btn-yes" onclick="chooseYes(this)">
+                <span class="btn-text">YES</span>
+                <span class="btn-emoji">💗</span>
+            </button>
+            <button class="btn btn-no" onclick="chooseNo(this)">
+                <span class="btn-text">NO</span>
+                <span class="btn-emoji">💔</span>
+            </button>
+        </div>
+        
+        <div class="result-message" id="resultMsg"></div>
+        
+        <a href="letter_page_final.html" class="back-link">← read the letter again</a>
+    </div>
+    
+    <script>
+        function createFloatingHearts() {
+            const bg = document.getElementById('heartsBg');
+            const hearts = ['💗', '💖', '💕', '💞', '🌸'];
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 4 + 's';
+                heart.style.animationDuration = (3 + Math.random() * 3) + 's';
+                heart.style.fontSize = (16 + Math.random() * 20) + 'px';
+                bg.appendChild(heart);
+            }
+        }
+        createFloatingHearts();
+        
+        function chooseYes(btn) {
+            if (btn.classList.contains('clicked')) return;
+            btn.classList.add('clicked');
+            document.getElementById('resultMsg').textContent = "she said yes 🥹💗";
+            document.getElementById('resultMsg').classList.add('show');
+            burstHearts();
+        }
+        
+        function chooseNo(btn) {
+            if (btn.classList.contains('clicked')) return;
+            btn.classList.add('clicked');
+            document.getElementById('resultMsg').textContent = "ouch... 💔";
+            document.getElementById('resultMsg').classList.add('show');
+        }
+        
+        function burstHearts() {
+            const colors = ['#C97B94', '#E8A4B8', '#FFD1DC', '#FFB6C1'];
+            for (let i = 0; i < 30; i++) {
+                const heart = document.createElement('div');
+                heart.textContent = '💗';
+                heart.style.position = 'fixed';
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                heart.style.fontSize = '24px';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '100';
+                heart.style.transition = 'all 1.5s ease-out';
+                document.body.appendChild(heart);
+                
+                const angle = (Math.PI * 2 * i) / 30;
+                const distance = 100 + Math.random() * 200;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                requestAnimationFrame(() => {
+                    heart.style.transform = `translate(${x}px, ${y}px) scale(0)`;
+                    heart.style.opacity = '0';
+                });
+                
+                setTimeout(() => heart.remove(), 1500);
+            }
+        }
+    </script>
+</body>
+</html>"""
+
+with open("/mnt/agents/output/choice.html", "w", encoding="utf-8") as f:
+    f.write(choice_html)
+print("Saved: choice.html")
+
+print("\n✅ BOTH PAGES DONE!")
+print("\n📄 letter_page_final.html — The letter with NEXT button")
+print("📄 choice.html — The 'Moji, Do you choose us?' page with interactive buttons")
+print("\nWhen she clicks YES → button transforms into 💗 with heart burst animation")
+print("When she clicks NO → button transforms into 💔 with shake animation")
+print("\nUpload BOTH files to GitHub / tiiny.host together!")

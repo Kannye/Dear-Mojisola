@@ -143,6 +143,28 @@
 
   .burst-heart{position:fixed;pointer-events:none;z-index:100;font-size:1.4rem;}
 
+  /* ---------- music widget ---------- */
+  .music-toggle{
+    position:fixed;right:18px;bottom:18px;z-index:20;
+    width:52px;height:52px;border-radius:50%;
+    background:linear-gradient(135deg, var(--rose), var(--gold));
+    color:#fff;font-size:1.4rem;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 26px rgba(20,4,14,.5);
+    cursor:pointer;animation:notebob 2.4s ease-in-out infinite;
+  }
+  @keyframes notebob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  .yt-audio-well{position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:0;overflow:hidden;pointer-events:none;}
+  @media (max-width:480px){
+    .music-toggle{right:14px;bottom:14px;}
+  }
+
+  /* ---------- location reveal ---------- */
+  .location-reveal{margin-top:34px;opacity:0;max-height:0;overflow:hidden;transition:opacity .8s ease, max-height .8s ease;}
+  .location-reveal.show{opacity:1;max-height:420px;}
+  .location-reveal .loc-label{font-family:'Nunito',sans-serif;font-size:.92rem;color:var(--rose-soft);letter-spacing:.05em;margin-bottom:14px;}
+  .location-reveal iframe{width:100%;height:230px;border:0;border-radius:14px;box-shadow:0 20px 45px rgba(20,4,14,.5);}
+
   @media (max-width:480px){
     .letter-header{padding:34px 22px 18px;}
     .letter-header h1{font-size:1.7rem;}
@@ -160,6 +182,9 @@
 
 <div class="hearts-field" id="heartsField" aria-hidden="true"></div>
 <div class="light-burst" id="lightBurst" aria-hidden="true"></div>
+
+<button class="music-toggle" id="musicToggle" aria-label="Mute our song">🔊</button>
+<div class="yt-audio-well" aria-hidden="true"><div id="ytPlayerSlot"></div></div>
 
 <!-- SEAL -->
 <section class="stage" id="seal-screen" tabindex="0" role="button" aria-label="Open the letter">
@@ -227,10 +252,19 @@
     </div>
 
     <div class="result-message" id="resultMsg"></div>
+
+    <div class="location-reveal" id="locationReveal">
+      <div class="loc-label">there's somewhere I want to take you 📍</div>
+      <iframe
+        src="https://maps.google.com/maps?q=KAP%20Hub%2C%2041%20Ogundana%20Street%2C%20Ikeja%2C%20Lagos&z=16&output=embed"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+    </div>
+
     <button class="back-link" id="backLink">← read the letter again</button>
   </div>
 </section>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   /* ---------- ambient floating hearts ---------- */
   const field = document.getElementById('heartsField');
@@ -249,6 +283,66 @@
     field.appendChild(h);
   }
 
+  /* ---------- background music (YouTube, triggered by the heart tap) ---------- */
+  const musicToggle = document.getElementById('musicToggle');
+  const YT_VIDEO_ID = 'kFztsFUQAFE'; // Burna Boy - For My Hand feat. Ed Sheeran (Official Audio)
+  let musicStarted = false;
+  let ytPlayer = null;
+  let ytReady = false;
+  let apiReady = false;
+  let pendingBind = false;
+
+  function bindYtPlayer(){
+    ytPlayer = new YT.Player('ytIframe', {
+      events: {
+        onReady: function(){
+          ytReady = true;
+          ytPlayer.unMute();
+          ytPlayer.setVolume(100);
+        },
+        onStateChange: function(e){
+          if(e.data === YT.PlayerState.PLAYING) musicToggle.textContent = '🔊';
+          else if(e.data === YT.PlayerState.PAUSED) musicToggle.textContent = '🔇';
+        }
+      }
+    });
+  }
+
+  window.onYouTubeIframeAPIReady = function(){
+    apiReady = true;
+    if(pendingBind) bindYtPlayer();
+  };
+
+  // creates the iframe with autoplay baked into the URL, synchronously,
+  // as a direct result of a real tap/click — this is what lets browsers
+  // allow sound, rather than an async command fired after the fact.
+  function startMusic(){
+    if(musicStarted) return;
+    musicStarted = true;
+    const slot = document.getElementById('ytPlayerSlot');
+    const iframe = document.createElement('iframe');
+    iframe.id = 'ytIframe';
+    iframe.width = '2';
+    iframe.height = '2';
+    iframe.style.border = '0';
+    iframe.allow = 'autoplay; encrypted-media';
+    iframe.src = `https://www.youtube.com/embed/${YT_VIDEO_ID}?autoplay=1&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1`;
+    slot.appendChild(iframe);
+    musicToggle.textContent = '🔊';
+
+    if(apiReady) bindYtPlayer();
+    else pendingBind = true;
+  }
+
+  musicToggle.addEventListener('click', ()=>{
+    if(!musicStarted){ startMusic(); return; } // safety net: this tap alone is enough to start it
+    if(ytPlayer && ytReady){
+      const state = ytPlayer.getPlayerState();
+      if(state === 1) ytPlayer.pauseVideo();
+      else ytPlayer.playVideo();
+    }
+  });
+
   /* ---------- open the seal ---------- */
   const sealScreen = document.getElementById('seal-screen');
   const sealHeart = document.getElementById('sealHeart');
@@ -261,6 +355,7 @@
   function openLetter(){
     if(opened) return;
     opened = true;
+    startMusic();
     sealScreen.classList.add('opening');
     sealHeart.classList.add('opening');
     lightBurst.classList.add('active');
@@ -364,6 +459,7 @@
     resultMsg.classList.add('show');
   });
 
+  const locationReveal = document.getElementById('locationReveal');
   btnYes.addEventListener('click', ()=>{
     if(decided) return;
     decided = true;
@@ -372,6 +468,7 @@
     resultMsg.textContent = 'I love you 🥹💗';
     resultMsg.classList.add('show');
     burstHearts();
+    setTimeout(()=> locationReveal.classList.add('show'), 700);
   });
 </script>
 

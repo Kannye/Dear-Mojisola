@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Letter For You</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: linear-gradient(135deg, #FFF0F3 0%, #FDF2F5 50%, #FCE8EE 100%);
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 16px;
+            font-family: 'Nunito', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .envelope {
+            background: #fff;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(139, 74, 94, 0.12), 0 4px 12px rgba(201, 123, 148, 0.08);
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #C97B94, #E8A4B8, #C97B94);
+        }
+        .header {
+            background: linear-gradient(135deg, #FFF0F3, #FCE8EE);
+            padding: 50px 30px 30px;
+            text-align: center;
+            position: relative;
+        }
+        .from-badge {
+            display: inline-block;
+            background: rgba(201, 123, 148, 0.1);
+            color: #C97B94;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            animation: slideDown 0.6s ease-out 0.2s both;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            color: #8B4A5E;
+            font-weight: 600;
+            margin-bottom: 8px;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+        .header .sub {
+            color: #C97B94;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+        .content {
+            padding: 40px 35px 30px;
+            line-height: 1.9;
+            color: #5A3A45;
+        }
+        .content p {
+            margin-bottom: 22px;
+            font-size: 1.1rem;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .content p:nth-child(1) { animation-delay: 0.8s; }
+        .content p:nth-child(2) { animation-delay: 1.0s; }
+        .content p:nth-child(3) { animation-delay: 1.2s; }
+        .content p:nth-child(4) { animation-delay: 1.4s; }
+        .content p:nth-child(5) { animation-delay: 1.6s; }
+        .content p:nth-child(6) { animation-delay: 1.8s; }
+        .content p:nth-child(7) { animation-delay: 2.0s; }
+        .content p:nth-child(8) { animation-delay: 2.2s; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .highlight {
+            background: linear-gradient(120deg, rgba(201, 123, 148, 0.12) 0%, rgba(232, 164, 184, 0.12) 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .signature {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(201, 123, 148, 0.2);
+            text-align: right;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: #8B4A5E;
+            font-style: italic;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 2.4s forwards;
+        }
+        .signature .title {
+            font-weight: 600;
+            font-size: 1.3rem;
+        }
+        .signature .subtitle {
+            font-size: 1rem;
+            color: #C97B94;
+            margin-top: 4px;
+        }
+        .footer {
+            text-align: center;
+            padding: 0 30px 45px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 2.6s forwards;
+        }
+        .footer .heart {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .footer .sig {
+            color: #C97B94;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+        .hearts-deco {
+            position: absolute;
+            opacity: 0.06;
+            font-size: 120px;
+            pointer-events: none;
+            user-select: none;
+            animation: float 6s ease-in-out infinite;
+        }
+        .heart-1 { top: 8%; left: -20px; transform: rotate(-15deg); animation-delay: 0s; }
+        .heart-2 { bottom: 12%; right: -20px; transform: rotate(20deg); animation-delay: 2s; }
+        .heart-3 { top: 40%; right: 10px; font-size: 60px; transform: rotate(10deg); animation-delay: 4s; }
+        .heart-4 { bottom: 30%; left: 15px; font-size: 50px; transform: rotate(-10deg); animation-delay: 1s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); }
+            50% { transform: translateY(-10px) rotate(var(--r, 0deg)); }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 12px 10px; }
+            .content { padding: 28px 22px 25px; }
+            .header { padding: 40px 20px 25px; }
+            .header h1 { font-size: 1.9rem; }
+            .content p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="envelope">
+        <div class="hearts-deco heart-1">💗</div>
+        <div class="hearts-deco heart-2">💖</div>
+        <div class="hearts-deco heart-3">💕</div>
+        <div class="hearts-deco heart-4">💞</div>
+
+        <div class="header">
+            <div class="from-badge">from weird boy that stares</div>
+            <h1>For You</h1>
+            <div class="sub">A letter I needed you to read</div>
+        </div>
+
+        <div class="content">
+            <p>I know I messed up. Sorry doesn't just fix it, I get that. But what we had was real. The way we looked at each other, the laughs we shared, the late night calls, the random snaps. I miss all of it mama, cause it was real and it was ours.</p>
+
+            <p>I'm not letting one dumb moment erase all of that. I don't know exactly where we go from here, and I won't pretend I do.</p>
+
+            <p>But if you can find it in you to let it go and trust me, then I'm here for whatever you need be it time, space, proof. I just need you to stay long enough to see that I mean every word.</p>
+
+            <p>If there's even a little piece of you that still wants this, hold onto it. I'll do the rest.</p>
+
+            <p>And I promise you, I'll fight for us like nothing else matters. I'll show up consistently, communicate better, and prove with my actions not just words that you're my priority. No more dumb mistakes.</p>
+
+            <div class="signature">
+                <div class="title">~Supreme Leader</div>
+                <div class="subtitle">(Weird boy that stares)</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="heart">💗🌸</div>
+            <div class="sig">Yes I've made a choice, and I choose you</div>
+        </div>
+    </div>
+</body>
+</html>

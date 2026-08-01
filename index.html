@@ -154,7 +154,7 @@
     cursor:pointer;animation:notebob 2.4s ease-in-out infinite;
   }
   @keyframes notebob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-
+  .yt-audio-well{position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:0;overflow:hidden;pointer-events:none;}
   @media (max-width:480px){
     .music-toggle{right:14px;bottom:14px;}
   }
@@ -185,9 +185,8 @@
 <div class="light-burst" id="lightBurst" aria-hidden="true"></div>
 
 <button class="music-toggle" id="musicToggle" aria-label="Mute our song">🔇</button>
-
-<!-- Native audio element — preloaded for instant playback, no ding, no lag -->
-<audio id="bgMusic" src="Savage-Ft-Victory-Rosemary-(TrendyBeatz.com).mp3" preload="auto" loop></audio>
+<audio id="bgMusic" src="ROSEMARY.mp3" preload="auto" loop></audio>
+</div>
 
 <!-- SEAL -->
 <section class="stage" id="seal-screen" tabindex="0" role="button" aria-label="Open the letter">
@@ -297,7 +296,6 @@
     bgMusic.play().then(()=>{
       musicToggle.textContent = '🔊';
     }).catch(()=>{
-      // Autoplay blocked — keep muted icon, user can tap toggle
       musicToggle.textContent = '🔇';
     });
   }

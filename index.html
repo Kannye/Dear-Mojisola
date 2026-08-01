@@ -154,7 +154,7 @@
     cursor:pointer;animation:notebob 2.4s ease-in-out infinite;
   }
   @keyframes notebob{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-  .yt-audio-well{position:fixed;bottom:0;right:0;width:2px;height:2px;opacity:0;overflow:hidden;pointer-events:none;}
+
   @media (max-width:480px){
     .music-toggle{right:14px;bottom:14px;}
   }
@@ -177,14 +177,17 @@
     *{animation-duration:.001s !important;animation-iteration-count:1 !important;transition-duration:.25s !important;}
   }
 </style>
+<base target="_blank">
 </head>
 <body>
 
 <div class="hearts-field" id="heartsField" aria-hidden="true"></div>
 <div class="light-burst" id="lightBurst" aria-hidden="true"></div>
 
-<button class="music-toggle" id="musicToggle" aria-label="Mute our song">🔊</button>
-<div class="yt-audio-well" aria-hidden="true"><div id="ytPlayerSlot"></div></div>
+<button class="music-toggle" id="musicToggle" aria-label="Mute our song">🔇</button>
+
+<!-- Native audio element — preloaded for instant playback, no ding, no lag -->
+<audio id="bgMusic" src="Savage-Ft-Victory-Rosemary-(TrendyBeatz.com).mp3" preload="auto" loop></audio>
 
 <!-- SEAL -->
 <section class="stage" id="seal-screen" tabindex="0" role="button" aria-label="Open the letter">
@@ -264,7 +267,6 @@
   </div>
 </section>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   /* ---------- ambient floating hearts ---------- */
   const field = document.getElementById('heartsField');
@@ -283,65 +285,35 @@
     field.appendChild(h);
   }
 
-  /* ---------- background music (YouTube, triggered by the heart tap) ---------- */
+  /* ---------- background music (native <audio>, zero lag, no ding) ---------- */
   const musicToggle = document.getElementById('musicToggle');
-  const YT_VIDEO_ID = 'kFztsFUQAFE'; // Burna Boy - For My Hand feat. Ed Sheeran (Official Audio)
+  const bgMusic = document.getElementById('bgMusic');
   let musicStarted = false;
-  let ytPlayer = null;
-  let ytReady = false;
-  let apiReady = false;
-  let pendingBind = false;
 
-  function bindYtPlayer(){
-    ytPlayer = new YT.Player('ytIframe', {
-      events: {
-        onReady: function(){
-          ytReady = true;
-          ytPlayer.unMute();
-          ytPlayer.setVolume(100);
-        },
-        onStateChange: function(e){
-          if(e.data === YT.PlayerState.PLAYING) musicToggle.textContent = '🔊';
-          else if(e.data === YT.PlayerState.PAUSED) musicToggle.textContent = '🔇';
-        }
-      }
-    });
-  }
-
-  window.onYouTubeIframeAPIReady = function(){
-    apiReady = true;
-    if(pendingBind) bindYtPlayer();
-  };
-
-  // creates the iframe with autoplay baked into the URL, synchronously,
-  // as a direct result of a real tap/click — this is what lets browsers
-  // allow sound, rather than an async command fired after the fact.
   function startMusic(){
     if(musicStarted) return;
     musicStarted = true;
-    const slot = document.getElementById('ytPlayerSlot');
-    const iframe = document.createElement('iframe');
-    iframe.id = 'ytIframe';
-    iframe.width = '2';
-    iframe.height = '2';
-    iframe.style.border = '0';
-    iframe.allow = 'autoplay; encrypted-media';
-    iframe.src = `https://www.youtube.com/embed/${YT_VIDEO_ID}?autoplay=1&enablejsapi=1&playsinline=1&controls=0&rel=0&modestbranding=1`;
-    slot.appendChild(iframe);
-    musicToggle.textContent = '🔊';
-
-    if(apiReady) bindYtPlayer();
-    else pendingBind = true;
+    bgMusic.volume = 1.0;
+    bgMusic.play().then(()=>{
+      musicToggle.textContent = '🔊';
+    }).catch(()=>{
+      // Autoplay blocked — keep muted icon, user can tap toggle
+      musicToggle.textContent = '🔇';
+    });
   }
 
-  musicToggle.addEventListener('click', ()=>{
-    if(!musicStarted){ startMusic(); return; } // safety net: this tap alone is enough to start it
-    if(ytPlayer && ytReady){
-      const state = ytPlayer.getPlayerState();
-      if(state === 1) ytPlayer.pauseVideo();
-      else ytPlayer.playVideo();
+  function toggleMusic(){
+    if(!musicStarted){ startMusic(); return; }
+    if(bgMusic.paused){
+      bgMusic.play();
+      musicToggle.textContent = '🔊';
+    } else {
+      bgMusic.pause();
+      musicToggle.textContent = '🔇';
     }
-  });
+  }
+
+  musicToggle.addEventListener('click', toggleMusic);
 
   /* ---------- open the seal ---------- */
   const sealScreen = document.getElementById('seal-screen');
